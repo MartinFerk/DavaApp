@@ -76,7 +76,9 @@ function CreateGroup() {
                     style={{ marginBottom: '15px' }}
                 />
 
-                <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px',backgroundColor: 'white',
+                    position: 'relative',
+                    zIndex: 100 }}>
                     {filteredUsers.map(user => (
 
                         <div
