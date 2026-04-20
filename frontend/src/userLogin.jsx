@@ -21,7 +21,7 @@ function Login({ setIsLoggedIn, setUser }) {
 
         const podatki = {email: email,username:username,  password: password};
         try {
-            const odgovor = await fetch('http://localhost:5001/login', {
+            const odgovor = await fetch('/_/backend/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(podatki)

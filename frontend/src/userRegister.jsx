@@ -20,7 +20,7 @@ function Register() {
 
         const podatki = {email, username, password};
         try {
-            const odgovor = await fetch('http://localhost:5001/register', {
+            const odgovor = await fetch('/_/backend/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(podatki)
