@@ -79,13 +79,28 @@ function CreateGroup() {
                 <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
                     {filteredUsers.map(user => (
 
-                        <div key={user.username} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                        <div
+                            key={user.username}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                                marginBottom: '8px',
+                                justifyContent: 'flex-start'
+                            }}
+                        >
                             <input
                                 type="checkbox"
                                 checked={selectedUsers.includes(user.username)}
                                 onChange={() => toggleUser(user.username)}
                             />
-                            <span style={{ fontSize: '16px', color:"black" }}>{user.username}</span>
+                            <span style={{
+                                fontSize: '16px',
+                                color: 'black',
+                                display: 'inline-block'
+                            }}>
+                    {user.username}
+                </span>
                         </div>
                     ))}
                 </div>
