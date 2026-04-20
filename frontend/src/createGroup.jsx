@@ -4,6 +4,7 @@ import './styles/userRegister.css';
 function CreateGroup() {
     const [groupName, setGroupName] = useState('');
     const [allUsers, setAllUsers] = useState([]);
+    console.log("Seznam uporabnikov:", allUsers);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
