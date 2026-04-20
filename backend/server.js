@@ -20,6 +20,14 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true }
 });
 
+const WorkLogSchema = new mongoose.Schema({
+    clientName: String,
+    time: Date,
+    pickupAddress: String,
+    destinationAddress: String,
+    assignedUser: { type: String, required: true }
+});
+
 const User = mongoose.model('User', UserSchema);
 
 app.post('/register', async (req, res) => {
@@ -85,6 +93,31 @@ app.post('/login', async (req, res) => {
     } catch (error) {
         console.error("Napaka pri prijavi:", error);
         res.status(500).json({ error: "Napaka na strežniku." });
+    }
+});
+
+
+const WorkLog = mongoose.model('WorkLog', WorkLogSchema);
+
+// 2. Pot za pridobivanje vseh uporabnikov (za dropdown v frontend)
+app.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({}, 'username'); // Vrne samo uporabniška imena
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: "Napaka pri pridobivanju uporabnikov" });
+    }
+});
+
+// 3. Pot za shranjevanje novega termina
+app.post('/create-work', async (req, res) => {
+    try {
+        const { clientName, time, pickupAddress, destinationAddress, assignedUser } = req.body;
+        const noviLog = new WorkLog({ clientName, time, pickupAddress, destinationAddress, assignedUser });
+        await noviLog.save();
+        res.status(201).json({ message: "Termin uspešno ustvarjen!" });
+    } catch (error) {
+        res.status(500).json({ error: "Napaka pri shranjevanju termina." });
     }
 });
 
