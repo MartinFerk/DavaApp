@@ -12,12 +12,16 @@ function WorkLog() {
 
     // Fetch uporabnikov ob nalaganju strani
     useEffect(() => {
-        fetch('/_/backend/users') // Prilagodi pot, če uporabljaš proxy
-            .then(res => res.json())
+        fetch('/_/backend/users')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Strežnik je vrnil napako: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(data => setUsers(data))
-            .catch(err => console.error("Napaka:", err));
+            .catch(err => console.error("Napaka pri fetch:", err));
     }, []);
-
     const handleCreateLog = async (e) => {
         e.preventDefault();
 
