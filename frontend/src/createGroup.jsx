@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './styles/userRegister.css';
+import './styles/App.css';
 
 function CreateGroup() {
     const [groupName, setGroupName] = useState('');
