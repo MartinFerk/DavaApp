@@ -47,7 +47,7 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-app.post('/register',verifyToken, async (req, res) => {
+app.post('/register', async (req, res) => {
     try {
 
         const { email, username, password, isAdmin } = req.body;
@@ -73,7 +73,7 @@ app.post('/register',verifyToken, async (req, res) => {
     }
 });
 
-app.post('/login',verifyToken, async (req, res) => {
+app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         const uporabnik = await User.findOne({ username });
