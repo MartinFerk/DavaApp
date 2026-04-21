@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 require('dotenv').config();
 
 const bcrypt = require('bcrypt');
@@ -239,17 +240,17 @@ app.post('/create-work', verifyToken, async (req, res) => {
         const user = await User.findOne({ username: req.body.assignedUser });
 
         if (user) {
-            await transporter.sendMail({
-                from: process.env.EMAIL,
+            await resend.emails.send({
+                from: 'WorkWave <onboarding@resend.dev>',
                 to: user.email,
                 subject: 'Nov termin dodeljen!',
                 html: `
-                    <h2>Imaš nov termin!</h2>
-                    <p><b>Stranka:</b> ${req.body.clientName}</p>
-                    <p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>
-                    <p><b>Prevzem:</b> ${req.body.pickupAddress}</p>
-                    <p><b>Cilj:</b> ${req.body.destinationAddress}</p>
-                `
+            <h2>Imaš nov termin!</h2>
+            <p><b>Stranka:</b> ${req.body.clientName}</p>
+            <p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>
+            <p><b>Prevzem:</b> ${req.body.pickupAddress}</p>
+            <p><b>Cilj:</b> ${req.body.destinationAddress}</p>
+        `
             });
         }
 
