@@ -37,7 +37,7 @@
     }
 }
 
-.funcButtons{
+.funcButton{
     display: flex;
     justify-content: center;
     align-items: center;
