@@ -233,7 +233,7 @@ app.post('/create-work', verifyToken, async (req, res) => {
 
         if (user) {
             const mailResult = await resend.emails.send({
-                from: 'onboarding@resend.dev',
+                from: 'noreply@workwave.space',
                 to: user.email,
                 subject: 'Nov termin dodeljen!',
                 html: `
