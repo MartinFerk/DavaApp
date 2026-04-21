@@ -16,6 +16,28 @@ const [work, setWork] = useState([]);
             .catch(err => console.log("Napaka pri pridobivanju dela", err));
     }, []);
 
+    const handleDelete = async (id) => {
+        const response = await apiFetch(`/_/backend/work/${id}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            setWork(work.filter(w => w._id !== id));
+        } else {
+            alert("Napaka pri brisanju.");
+        }
+    };
+
+    const handleDone = async (id) => {
+        const response = await apiFetch(`/_/backend/work/${id}/done`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            setWork(work.filter(w => w._id !== id));
+        } else {
+            alert("Napaka pri označevanju.");
+        }
+    };
+
     return (
         <div className="register-container">
             <h2>Moje delo</h2>
@@ -28,6 +50,12 @@ const [work, setWork] = useState([]);
                         <p>Čas: {new Date(w.time).toLocaleString()}</p>
                         <p>Prevzem: {w.pickupAddress}</p>
                         <p>Cilj: {w.destinationAddress}</p>
+                        {currentUser.isAdmin && (
+                            <button onClick={() => handleDelete(w._id)}>Zbriši</button>
+                        )}
+                        {!currentUser.isAdmin && (
+                            <button onClick={() => handleDone(w._id)}>✓ Opravljeno</button>
+                        )}
                     </div>
                 ))
             )}
