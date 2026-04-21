@@ -232,7 +232,7 @@ app.post('/create-work', verifyToken, async (req, res) => {
         const user = await User.findOne({ username: req.body.assignedUser });
 
         if (user) {
-            await resend.emails.send({
+            const mailResult = await resend.emails.send({
                 from: 'onboarding@resend.dev',
                 to: user.email,
                 subject: 'Nov termin dodeljen!',
