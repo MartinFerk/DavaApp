@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './styles/userRegister.css';
 import './styles/App.css'
 import {useNavigate} from "react-router-dom";
+import apiFetch from "./api.js";
 
 
 function Login({ setIsLoggedIn, setUser, setIsAdmin }) {
@@ -18,9 +19,9 @@ function Login({ setIsLoggedIn, setUser, setIsAdmin }) {
         e.preventDefault();
         setErrorMsg('');
 
-        const podatki = {email: email,username:username,  password: password};
+        const podatki = {username:username,  password: password};
         try {
-            const odgovor = await fetch('/_/backend/login', {
+            const odgovor = await apiFetch('/_/backend/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(podatki)
@@ -32,6 +33,9 @@ function Login({ setIsLoggedIn, setUser, setIsAdmin }) {
                 setErrorMsg(rezultat.error);
 
             } else {
+
+                localStorage.setItem('token', rezultat.token);
+
 
                 setIsLoggedIn(true);
                 setIsAdmin(rezultat.user.isAdmin || false);

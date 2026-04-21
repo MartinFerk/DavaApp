@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -32,6 +34,19 @@ const Group = mongoose.model('Group', new mongoose.Schema({
     members: [String]
 }))
 
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // "Bearer <token>"
+
+    if (!token) return res.status(401).json({ error: "Ni tokena" });
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: "Neveljaven token" });
+        req.user = user;
+        next();
+    });
+};
+
 app.post('/register', async (req, res) => {
     try {
 
@@ -42,10 +57,12 @@ app.post('/register', async (req, res) => {
             return res.status(400).json({ error: "Uporabnik že obstaja!" });
         }
 
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const noviUporabnik = new User({
             email,
             username,
-            password,
+            password: hashedPassword,
             isAdmin: isAdmin || false
         });
 
@@ -61,28 +78,32 @@ app.post('/login', async (req, res) => {
         const { username, password } = req.body;
         const uporabnik = await User.findOne({ username });
 
-        if (!uporabnik || uporabnik.password !== password) {
+        const passwordMatch = await bcrypt.compare(password, uporabnik.password);
+
+        if (!uporabnik || !passwordMatch) {
             return res.status(401).json({ error: "Napačni podatki" });
         }
-        res.status(200).json({
-            user: {
-                username: uporabnik.username,
-                isAdmin: uporabnik.isAdmin
-            }
-        });
+
+        const token = jwt.sign(
+            { username: uporabnik.username, isAdmin: uporabnik.isAdmin },
+            process.env.JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.status(200).json({ token });
     } catch (err) {
         res.status(500).json({ error: "Napaka" });
     }
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users',verifyToken, async (req, res) => {
     try {
         const users = await User.find({}, 'username');
         res.json(users);
     } catch (err) { res.status(500).json({ error: "Napaka" }); }
 });
 
-app.post('/create-work', async (req, res) => {
+app.post('/create-work',verifyToken, async (req, res) => {
     try {
         const noviLog = new WorkLog(req.body);
         await noviLog.save();
@@ -91,7 +112,7 @@ app.post('/create-work', async (req, res) => {
 });
 
 
-app.post('/create-group', async (req, res) => {
+app.post('/create-group',verifyToken, async (req, res) => {
     try{
         const { groupName, groupAdmin, members } = req.body;
         const newGroup = new Group({ groupName, groupAdmin ,members });
@@ -103,7 +124,7 @@ app.post('/create-group', async (req, res) => {
 });
 
 
-app.get('/groups/:username', async (req, res) => {
+app.get('/groups/:username',verifyToken, async (req, res) => {
     try {
         const { username } = req.params;
         const groups = await Group.find({
@@ -118,7 +139,7 @@ app.get('/groups/:username', async (req, res) => {
     }
 });
 
-app.get('/work/:username', async (req, res) => {
+app.get('/work/:username',verifyToken, async (req, res) => {
 
     try{
         const { username } = req.params;
@@ -128,6 +149,8 @@ app.get('/work/:username', async (req, res) => {
         res.status(500).json({ error: "Napaka pri pridbivanju dela" });
     }
 });
+
+
 
 
 app.listen(5001, () => console.log("Backend teče na portu 5001"));

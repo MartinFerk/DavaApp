@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/userRegister.css';
+import apiFetch from './api';
 
 function MyWorkLog() {
 const [work, setWork] = useState([]);
@@ -9,7 +10,7 @@ const [work, setWork] = useState([]);
     useEffect(() => {
         if (!currentUser) return;
 
-        fetch(`/_/backend/work/${currentUser.username}`)
+        apiFetch(`/_/backend/work/${currentUser.username}`)
             .then(res => res.json())
             .then(data => setWork(data))
             .catch(err => console.log("Napaka pri pridobivanju dela", err));
