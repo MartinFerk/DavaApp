@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/userRegister.css';
+import apiFetch from './api';
 
 function MyGroups() {
     const [groups, setGroups] = useState([]);
@@ -9,7 +10,7 @@ function MyGroups() {
     useEffect(() => {
         if (!currentUser) return;
 
-        fetch(`/_/backend/groups/${currentUser.username}`)
+        apiFetch(`/_/backend/groups/${currentUser.username}`)
             .then(res => res.json())
             .then(data => setGroups(data))
             .catch(err => console.log("Napaka pri pridobivanju skupin", err));

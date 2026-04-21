@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import './styles/userRegister.css';
 import {useNavigate} from "react-router-dom";
+import apiFetch from './api';
 
 
 
@@ -21,7 +22,7 @@ function Register() {
 
         const podatki = {email, username, password, isAdmin};
         try {
-            const odgovor = await fetch('/_/backend/register', {
+            const odgovor = await apiFetch('/_/backend/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(podatki)

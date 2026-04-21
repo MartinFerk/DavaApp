@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/userRegister.css';
+import apiFetch from './api';
 
 function WorkLog() {
     const [clientName, setClientName] = useState('');
@@ -13,7 +14,7 @@ function WorkLog() {
     const currentUser = JSON.parse(localStorage.getItem('prijavljenUporabnik'));
 
     useEffect(() => {
-        fetch(`/_/backend/groups/${currentUser.username}`)
+        apiFetch(`/_/backend/groups/${currentUser.username}`)
             .then(res => res.json())
             .then(data => {
                 const allMembers = [...new Set(data.flatMap(group => group.members))];
@@ -29,7 +30,7 @@ function WorkLog() {
         const workData = { clientName, time, pickupAddress, destinationAddress, assignedUser };
 
         try {
-            const response = await fetch('/_/backend/create-work', {
+            const response = await apiFetch('/_/backend/create-work', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(workData)

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/userRegister.css';
+import apiFetch from './api';
 
 function CreateGroup() {
     const [groupName, setGroupName] = useState('');
@@ -9,7 +10,7 @@ function CreateGroup() {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('/_/backend/users')
+        apiFetch('/_/backend/users')
             .then(res => res.json())
             .then(data => setAllUsers(data))
             .catch(err => console.error("Napaka pri pridobivanju userjev:", err));
@@ -41,7 +42,7 @@ function CreateGroup() {
             members: selectedUsers
         };
 
-        const response = await fetch('/_/backend/create-group', {
+        const response = await apiFetch('/_/backend/create-group', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(podatki)
