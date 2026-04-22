@@ -114,12 +114,11 @@ function AdminPage() {
     });
 
     return (
-        <div style={{ padding: '30px', overflowY: 'auto', minHeight: '100vh', boxSizing: 'border-box' }}>
+        <div style={{ padding: '30px', overflowY: 'auto', minHeight: '100vh', boxSizing: 'border-box', width: '100%' }}>
             <h2 style={{ color: 'white', marginBottom: '30px' }}>Admin pregled</h2>
 
             <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
-                {/* LEVA STRAN - SKUPINE */}
                 <div style={{ flex: 1, minWidth: '300px' }}>
                     <h3 style={{ color: 'white', marginBottom: '16px' }}>Moje skupine</h3>
                     {groups.length === 0 ? (
