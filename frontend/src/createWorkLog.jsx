@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './styles/global.css'
 import apiFetch from './api';
+import {useNavigate} from "react-router-dom";
 
 function WorkLog() {
     const [clientName, setClientName] = useState('');
@@ -12,6 +13,7 @@ function WorkLog() {
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const currentUser = JSON.parse(localStorage.getItem('prijavljenUporabnik'));
 
@@ -49,6 +51,10 @@ function WorkLog() {
             if (response.ok) {
                 setMessage({ text: "Termin uspešno ustvarjen!", type: 'success' });
                 setClientName(''); setTime(''); setPickupAddress(''); setDestinationAddress(''); setAssignedUser('');
+
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
             } else {
                 setMessage({ text: "Napaka pri ustvarjanju termina.", type: 'error' });
             }
