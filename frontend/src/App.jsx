@@ -90,38 +90,17 @@ function App() {
                                     <h2 style={{ color: 'white', textAlign: 'center', marginBottom: '30px' }}>Zakaj Work Wave?</h2>
                                     <div className="card-grid" style={{ maxWidth: '900px', margin: '0 auto' }}>
                                         <div className="card">
-                                            <h3>👥 Skupine</h3>
+                                            <h3 className="page-title"> Skupine</h3>
                                             <p>Organiziraj svoje sodelavce v skupine in delite delovne naloge.</p>
                                         </div>
                                         <div className="card">
-                                            <h3>🕒 Sledenje delu</h3>
+                                            <h3 className="page-title"> Sledenje delu</h3>
                                             <p>Enostavno beleženje terminov, časa in lokacij prevzema.</p>
                                         </div>
                                         <div className="card">
-                                            <h3>📊 Preglednost</h3>
+                                            <h3 className="page-title"> Preglednost</h3>
                                             <p>Napredna zgodovina in administracija za popoln nadzor.</p>
                                         </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {isLoggedIn && (
-                                <div style={{ marginTop: '50px', padding: '0 20px' }}>
-                                    <div className="card-grid" style={{ maxWidth: '800px', margin: '0 auto' }}>
-                                        <div className="card" onClick={() => navigate('/my-worklog')} style={{ cursor: 'pointer' }}>
-                                            <h3>Moje delo</h3>
-                                            <p>Preglej svoje trenutne zadolžitve in termine.</p>
-                                        </div>
-                                        <div className="card" onClick={() => navigate('/my-groups')} style={{ cursor: 'pointer' }}>
-                                            <h3>Moje skupine</h3>
-                                            <p>Preveri, v katerih skupinah si aktiven.</p>
-                                        </div>
-                                        {isAdmin && (
-                                            <div className="card" onClick={() => navigate('/admin')} style={{ cursor: 'pointer', background: '#e3f2fd' }}>
-                                                <h3>Admin Panel</h3>
-                                                <p>Upravljanje s celotnim sistemom.</p>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             )}
