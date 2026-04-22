@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import './styles/userRegister.css';
+import './styles/global.css'
 import {useNavigate} from "react-router-dom";
 import apiFetch from './api';
 
@@ -42,12 +42,12 @@ function Register() {
         }
     }
     return (
-
-            <div className="register-container">
+        <div className="page-container">
+            <div className="form-card">
                 <h2>Registracija Uporabnika</h2>
-                <form className="register-form" onSubmit={handleRegister}>
+                <form onSubmit={handleRegister}>
                     <div className="form-group">
-                        <label>Email: </label>
+                        <label>Email:</label>
                         <input
                             type="email"
                             value={email}
@@ -57,7 +57,7 @@ function Register() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Uporabniško ime: </label>
+                        <label>Uporabniško ime:</label>
                         <input
                             type="text"
                             value={username}
@@ -67,7 +67,7 @@ function Register() {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Geslo: </label>
+                        <label>Geslo:</label>
                         <input
                             type="password"
                             value={password}
@@ -76,24 +76,24 @@ function Register() {
                             required
                         />
                     </div>
-                    <div className="form-group">
-                        <label>
-                            Administrator
-                            <input type="checkbox"
-                                   checked={isAdmin}
-                                   onChange={(e) => setIsAdmin(e.target.checked)}
-                            />
-                        </label>
+                    <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <input
+                            type="checkbox"
+                            checked={isAdmin}
+                            onChange={(e) => setIsAdmin(e.target.checked)}
+                        />
+                        <label style={{ margin: 0 }}>Administrator</label>
                     </div>
-                    <button type="submit">Register</button>
+                    <button type="submit" className="btn" style={{width: '100%'}}>Registracija</button>
                     {successMsg && (
                         <p style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
                             {successMsg}
                         </p>
                     )}
                 </form>
-                {errorMsg && <p className="error-text">{errorMsg}</p>}
+                {errorMsg && <p className="error-text" style={{color: 'red', marginTop: '10px'}}>{errorMsg}</p>}
             </div>
+        </div>
     )
 }
 

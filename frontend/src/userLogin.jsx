@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-import './styles/userRegister.css';
-import './styles/App.css'
+import './styles/global.css'
 import {useNavigate} from "react-router-dom";
 import apiFetch from "./api.js";
 
@@ -55,37 +54,39 @@ function Login({ setIsLoggedIn, setUser, setIsAdmin }) {
     }
 
     return (
-        <div className="register-container">
-            <h2>Prijava Uporabnika</h2>
-            <form className="register-form" onSubmit={handleLogin}>
-                <div className="form-group">
-                    <label>Uporabniško ime: </label>
-                    <input
-                        type="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Uporabniško ime"
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Password: </label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Geslo"
-                        required
-                    />
-                </div>
-                <button type="submit">Prijava</button>
-                {successMsg && (
-                    <p style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
-                        {successMsg}
-                    </p>
-                )}
-            </form>
-            {errorMsg && <p className="error-text">{errorMsg}</p>}
+        <div className="page-container">
+            <div className="form-card">
+                <h2>Prijava Uporabnika</h2>
+                <form onSubmit={handleLogin}>
+                    <div className="form-group">
+                        <label>Uporabniško ime:</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Uporabniško ime"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Geslo:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Geslo"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn" style={{width: '100%'}}>Prijava</button>
+                    {successMsg && (
+                        <p style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
+                            {successMsg}
+                        </p>
+                    )}
+                </form>
+                {errorMsg && <p className="error-text" style={{color: 'red', marginTop: '10px'}}>{errorMsg}</p>}
+            </div>
         </div>
     )
 }

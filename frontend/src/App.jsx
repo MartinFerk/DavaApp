@@ -40,82 +40,72 @@ function App() {
         navigate('/');
     };
 
-  return (
-      <section>
-          <div className="wave">
-              <span></span>
-              <span></span>
-              <span></span>
-          </div>
+    return (
+        <section>
+            <nav className="globalNav">
+              <span className="navigationButtons">
+                  <button className="btn btn-gray" onClick={() => navigate('/')}>Domov</button>
 
-          <span className="globalNav">
-                <span className="navigationButtons">
-                <button onClick={() => navigate('/')}>Domov</button>
-                    <span className="adminNav">{isAdmin  && isLoggedIn ? (
-                        <>
-                            <button onClick={() => navigate('/create-group')}> Ustvari skupino</button>
-                            <button onClick={() => navigate('/admin')}> Pregled</button>
-                        </>
-                    ) : null }
+                  {isAdmin && isLoggedIn && (
+                      <span className="adminNav">
+                          <button className="btn btn-gray" onClick={() => navigate('/create-group')}>Ustvari skupino</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/admin')}>Pregled</button>
+                      </span>
+                  )}
 
-                    </span>
+                  {isLoggedIn && (
+                      <span className="userNav">
+                          <button className="btn btn-gray" onClick={() => navigate('/my-groups')}>Moje skupine</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/my-worklog')}>Moje delo</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/history')}>Zgodovina</button>
+                      </span>
+                  )}
+              </span>
 
-                    <span className="userNav">{ isLoggedIn ? (
-                        <>
-                            <button onClick={() => navigate('/my-groups')}> Moje skupine</button>
-                            <button onClick={() => navigate('/my-worklog')}> Moje delo</button>
-                            <button onClick={() => navigate('/history')}> Zgodovina</button>
-                        </>
-                    ) : null }
+                <span className="userNav">
+                  {!isLoggedIn ? (
+                      <>
+                          <button className="btn btn-gray" onClick={() => navigate('/login')}>Prijava</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/register')}>Registracija</button>
+                      </>
+                  ) : (
+                      <button className="btn btn-gray" onClick={handleLogout}>Odjava</button>
+                  )}
+              </span>
+            </nav>
 
-                    </span>
-            </span>
-            <span className="userNav">
-    {!isLoggedIn ? (
-        <>
-            <button onClick={() => navigate('/login')}>Prijava</button>
-            <button onClick={() => navigate('/register')}>Registracija</button>
-        </>
-    ) : (
-        <button onClick={handleLogout}>Odjava</button>
-    )}
-</span>
+            <div className="page-container">
+                <Routes>
+                    <Route path="/" element={
+                        <header style={{ textAlign: 'center', color: 'white', paddingTop: '100px' }}>
+                            <h1>Work Wave</h1>
+                            {isLoggedIn && user && (
+                                <>
+                                    <h2>Pozdravljen, {user.username}</h2>
+                                    {isAdmin && (
+                                        <div style={{ marginTop: '20px' }}>
+                                            <button onClick={() => navigate('/work')} className="btn btn-gray" style={{ fontSize: '18px', padding: '12px 24px' }}>
+                                                Ustvari Termin
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </header>
+                    } />
 
-        </span>
-
-          <div style={{ position: 'relative', zIndex: 10 }}>
-              <Routes>
-                  <Route path="/" element={
-                      <header style={{ textAlign: 'center', color: 'white', paddingTop: '175px' }}>
-                          <h1>Work Wave</h1>
-                          {isLoggedIn && user && (
-                              <>
-                                  <h2>Pozdravljen, {user.username}</h2>
-                                  {isAdmin && (
-                                      <>
-                                          <div>
-                                              <button onClick={ ()=>navigate('/work')} className="termin-btn"> Ustvari Termin </button>
-                                          </div>
-                                      </>
-                                  )}
-                              </>
-                          )}
-                      </header>
-                  } />
-
-                  <Route path="/register" element={<UserRegister />} />
-                  <Route path="/login" element={<UserLogin setIsLoggedIn={setIsLoggedIn} setUser={setUser}  setIsAdmin={setIsAdmin}/>} />
-                  <Route path="/work" element={< WorkLog />} />
-                  <Route path="/create-group" element={< CreateGroup />} />
-                  <Route path="/my-groups" element={< MyGroups />} />
-                  <Route path="/my-worklog" element={< MyWorkLog />} />
-                  <Route path="/admin" element={<AdminPage />} />
-                  <Route path="/history" element={<HistoryPage />} />
-
-              </Routes>
-          </div>
-          <Analytics />
-      </section>
-  )
+                    <Route path="/register" element={<UserRegister />} />
+                    <Route path="/login" element={<UserLogin setIsLoggedIn={setIsLoggedIn} setUser={setUser} setIsAdmin={setIsAdmin} />} />
+                    <Route path="/work" element={<WorkLog />} />
+                    <Route path="/create-group" element={<CreateGroup />} />
+                    <Route path="/my-groups" element={<MyGroups />} />
+                    <Route path="/my-worklog" element={<MyWorkLog />} />
+                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/history" element={<HistoryPage />} />
+                </Routes>
+            </div>
+            <Analytics />
+        </section>
+    )
 }
 export default App
