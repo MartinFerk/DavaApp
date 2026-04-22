@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './styles/userRegister.css';
+import './styles/global.css'
 import apiFetch from './api';
 
 function MyGroups() {
@@ -17,7 +17,7 @@ function MyGroups() {
     }, []);
 
     return (
-        <div className="register-container">
+        <div className="page-container">
             <h2>Moje skupine</h2>
             {groups.length === 0 ? (
                 <p>Nisi v nobeni skupini.</p>

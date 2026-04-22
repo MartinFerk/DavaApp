@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './styles/userRegister.css';
+import './styles/global.css'
 import apiFetch from './api';
 
 function MyWorkLog() {
@@ -28,7 +28,7 @@ const [work, setWork] = useState([]);
     };
 
     return (
-        <div className="register-container">
+        <div className="page-container">
             <h2>Moje delo</h2>
             {work.length === 0 ? (
                 <p>Nimaš nobenega dela.</p>
