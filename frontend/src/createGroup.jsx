@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './styles/global.css'
 import apiFetch from './api';
+import {useNavigate} from "react-router-dom";
 
 function CreateGroup() {
     const [groupName, setGroupName] = useState('');
@@ -10,6 +11,7 @@ function CreateGroup() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
+    const navigate = useNavigate();
 
     const currentUser = JSON.parse(localStorage.getItem('prijavljenUporabnik'));
 
@@ -67,6 +69,10 @@ function CreateGroup() {
                 setMessage({ text: "Skupina uspešno ustvarjena!", type: 'success' });
                 setGroupName('');
                 setSelectedUsers([]);
+
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
             } else {
                 setMessage({ text: "Napaka pri ustvarjanju skupine.", type: 'error' });
             }
