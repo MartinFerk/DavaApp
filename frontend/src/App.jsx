@@ -53,7 +53,7 @@ function App() {
                     <span className="adminNav">{isAdmin  && isLoggedIn ? (
                         <>
                             <button onClick={() => navigate('/create-group')}> Ustvari skupino</button>
-                            <button onClick={() => navigate('/admini')}> Pregled</button>
+                            <button onClick={() => navigate('/admin')}> Pregled</button>
                         </>
                     ) : null }
 
