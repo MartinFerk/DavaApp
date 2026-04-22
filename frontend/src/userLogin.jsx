@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-import './styles/userRegister.css';
-import './styles/App.css'
+import './styles/global.css'
 import {useNavigate} from "react-router-dom";
 import apiFetch from "./api.js";
 
@@ -79,7 +78,7 @@ function Login({ setIsLoggedIn, setUser, setIsAdmin }) {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-blue" style={{width: '100%'}}>Prijava</button>
+                    <button type="submit" className="btn" style={{width: '100%'}}>Prijava</button>
                     {successMsg && (
                         <p style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
                             {successMsg}

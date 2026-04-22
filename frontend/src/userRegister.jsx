@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import './styles/userRegister.css';
+import './styles/global.css'
 import {useNavigate} from "react-router-dom";
 import apiFetch from './api';
 
@@ -84,7 +84,7 @@ function Register() {
                         />
                         <label style={{ margin: 0 }}>Administrator</label>
                     </div>
-                    <button type="submit" className="btn btn-green" style={{width: '100%'}}>Registracija</button>
+                    <button type="submit" className="btn" style={{width: '100%'}}>Registracija</button>
                     {successMsg && (
                         <p style={{ color: 'green', marginTop: '10px', textAlign: 'center' }}>
                             {successMsg}

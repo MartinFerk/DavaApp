@@ -120,3 +120,14 @@ section {
 .btn:hover { opacity: 0.9; }
 
 .btn-gray { background: #888; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
