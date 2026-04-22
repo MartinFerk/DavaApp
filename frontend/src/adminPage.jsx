@@ -114,7 +114,17 @@ function AdminPage() {
     });
 
     return (
-        <div style={{ padding: '30px', overflowY: 'auto', minHeight: '100vh', boxSizing: 'border-box', width: '100%' }}>
+        <div style={{
+            padding: '100px 30px 30px 30px',
+            overflowY: 'auto',
+            height: '100vh',
+            boxSizing: 'border-box',
+            width: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 10
+        }}>
             <h2 style={{ color: 'white', marginBottom: '30px' }}>Admin pregled</h2>
 
             <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
