@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
+import './styles/global.css';
 import apiFetch from './api';
-import './styles/global.css'
-
 
 function HistoryLog() {
     const [history, setHistory] = useState([]);
@@ -28,25 +27,35 @@ function HistoryLog() {
             });
     }, []);
 
-    if (loading) return <div className="page-container"><p style={{ color: 'white' }}>Nalaganje zgodovine...</p></div>;
+    if (loading) return (
+        <div className="page-container">
+            <p style={{ color: 'white', fontSize: '18px' }}>Nalaganje...</p>
+        </div>
+    );
+
+    if (error) return (
+        <div className="page-container">
+            <p style={{ color: '#f44336', background: 'white', padding: '16px', borderRadius: '12px' }}>
+                ⚠️ {error}
+            </p>
+        </div>
+    );
 
     return (
-        <div className="register-container">
+        <div className="page-container">
             <h2 className="page-title">Zgodovina opravljenega dela</h2>
-
-            {error && <p style={{ color: '#f44336', background: 'white', padding: '10px', borderRadius: '6px' }}>{error}</p>}
 
             {history.length === 0 ? (
                 <p style={{ color: 'white' }}>Še nimaš opravljenih nalog.</p>
             ) : (
                 <div className="card-grid">
                     {history.map(w => (
-                        <div key={w._id} className="card" style={{ border: '2px solid #4CAF50', opacity: 0.8 }}>
+                        <div key={w._id} className="card" style={{ borderColor: '#4CAF50' }}>
                             <h3>{w.clientName}</h3>
-                            <p><strong>Opravljeno:</strong> {new Date(w.time).toLocaleString()}</p>
+                            <p>Čas: {new Date(w.time).toLocaleString()}</p>
                             <p>Prevzem: {w.pickupAddress}</p>
                             <p>Cilj: {w.destinationAddress}</p>
-                            <span style={{ color: '#4CAF50', fontWeight: 'bold' }}>✓ Opravljeno</span>
+                            <p style={{ color: '#4CAF50', fontWeight: 'bold', marginTop: '8px' }}>✓ Opravljeno</p>
                         </div>
                     ))}
                 </div>
