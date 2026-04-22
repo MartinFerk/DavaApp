@@ -33,7 +33,8 @@ const WorkLog = mongoose.model('WorkLog', new mongoose.Schema({
     isCompleted: {
         type: Boolean,
         default: false
-    }
+    },
+    createdBy: String
 }));
 
 const Group = mongoose.model('Group', new mongoose.Schema({
@@ -181,8 +182,8 @@ app.delete('/work/:id', verifyToken, async (req, res) => {
 
         if (!work) return res.status(404).json({ error: "Termin ne obstaja" });
 
-        if (!req.user.isAdmin) {
-            return res.status(403).json({ error: "Samo admin lahko zbriše termin" });
+        if (!req.user.isAdmin || work.createdBy !== req.user.username) {
+            return res.status(403).json({ error: "Nimaš dovoljenja za brisanje tega termina" });
         }
 
         await WorkLog.findByIdAndDelete(id);
@@ -249,10 +250,13 @@ app.put('/groups/:id', verifyToken, async (req, res) => {
 
 app.post('/create-work', verifyToken, async (req, res) => {
     try {
-        const noviLog = new WorkLog(req.body);
+        const noviLog = new WorkLog({
+            ...req.body,
+            createdBy: req.user.username
+        });
+
         await noviLog.save();
 
-        // poišči email assignedUserja
         const user = await User.findOne({ username: req.body.assignedUser });
 
         if (user) {
@@ -261,12 +265,12 @@ app.post('/create-work', verifyToken, async (req, res) => {
                 to: user.email,
                 subject: 'Nov termin dodeljen!',
                 html: `
-            <h2>Imaš nov termin!</h2>
-            <p><b>Stranka:</b> ${req.body.clientName}</p>
-            <p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>
-            <p><b>Prevzem:</b> ${req.body.pickupAddress}</p>
-            <p><b>Cilj:</b> ${req.body.destinationAddress}</p>
-        `
+                    <h2>Imaš nov termin!</h2>
+                    <p><b>Stranka:</b> ${req.body.clientName}</p>
+                    <p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>
+                    <p><b>Prevzem:</b> ${req.body.pickupAddress}</p>
+                    <p><b>Cilj:</b> ${req.body.destinationAddress}</p>
+                `
             });
 
             console.log("Mail result:", mailResult);
@@ -281,7 +285,7 @@ app.post('/create-work', verifyToken, async (req, res) => {
 app.get('/admin/work', verifyToken, async (req, res) => {
     try {
         if (!req.user.isAdmin) return res.status(403).json({ error: "Samo admin" });
-        const work = await WorkLog.find({});
+        const work = await WorkLog.find({ createdBy: req.user.username });
         res.json(work);
     } catch (err) {
         res.status(500).json({ error: "Napaka" });
