@@ -48,16 +48,16 @@ function App() {
 
                   {isAdmin && isLoggedIn && (
                       <span className="adminNav">
-                          <button className="btn btn-blue" onClick={() => navigate('/create-group')}>Ustvari skupino</button>
-                          <button className="btn btn-blue" onClick={() => navigate('/admin')}>Pregled</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/create-group')}>Ustvari skupino</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/admin')}>Pregled</button>
                       </span>
                   )}
 
                   {isLoggedIn && (
                       <span className="userNav">
-                          <button className="btn btn-blue" onClick={() => navigate('/my-groups')}>Moje skupine</button>
-                          <button className="btn btn-blue" onClick={() => navigate('/my-worklog')}>Moje delo</button>
-                          <button className="btn btn-blue" onClick={() => navigate('/history')}>Zgodovina</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/my-groups')}>Moje skupine</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/my-worklog')}>Moje delo</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/history')}>Zgodovina</button>
                       </span>
                   )}
               </span>
@@ -65,11 +65,11 @@ function App() {
                 <span className="userNav">
                   {!isLoggedIn ? (
                       <>
-                          <button className="btn btn-blue" onClick={() => navigate('/login')}>Prijava</button>
-                          <button className="btn btn-green" onClick={() => navigate('/register')}>Registracija</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/login')}>Prijava</button>
+                          <button className="btn btn-gray" onClick={() => navigate('/register')}>Registracija</button>
                       </>
                   ) : (
-                      <button className="btn btn-red" onClick={handleLogout}>Odjava</button>
+                      <button className="btn btn-gray" onClick={handleLogout}>Odjava</button>
                   )}
               </span>
             </nav>
@@ -84,7 +84,7 @@ function App() {
                                     <h2>Pozdravljen, {user.username}</h2>
                                     {isAdmin && (
                                         <div style={{ marginTop: '20px' }}>
-                                            <button onClick={() => navigate('/work')} className="btn btn-green" style={{ fontSize: '18px', padding: '12px 24px' }}>
+                                            <button onClick={() => navigate('/work')} className="btn btn-gray" style={{ fontSize: '18px', padding: '12px 24px' }}>
                                                 Ustvari Termin
                                             </button>
                                         </div>
