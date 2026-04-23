@@ -25,16 +25,34 @@ const User = mongoose.model('User', new mongoose.Schema({
 }));
 
 const WorkLog = mongoose.model('WorkLog', new mongoose.Schema({
-    clientName: String,
+    type: { type: String, enum: ['prevoz', 'servis', 'dostava', 'sestanek', 'it_ticket'], default: 'prevoz' },
     time: Date,
+    assignedUser: String,
+    isCompleted: { type: Boolean, default: false },
+    createdBy: String,
+
+    // Prevoz
+    clientName: String,
     pickupAddress: String,
     destinationAddress: String,
-    assignedUser: String,
-    isCompleted: {
-        type: Boolean,
-        default: false
-    },
-    createdBy: String
+
+    // Servis
+    vehicle: String,
+    serviceDescription: String,
+
+    // Dostava
+    packageDesc: String,
+    deliveryAddress: String,
+    recipient: String,
+
+    // Sestanek
+    topic: String,
+    location: String,
+
+    // IT Ticket
+    title: String,
+    description: String,
+    priority: { type: String, enum: ['nizka', 'srednja', 'visoka'] }
 }));
 
 const Group = mongoose.model('Group', new mongoose.Schema({
@@ -45,7 +63,7 @@ const Group = mongoose.model('Group', new mongoose.Schema({
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // "Bearer <token>"
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) return res.status(401).json({ error: "Ni tokena" });
 
@@ -260,20 +278,27 @@ app.post('/create-work', verifyToken, async (req, res) => {
         const user = await User.findOne({ username: req.body.assignedUser });
 
         if (user) {
-            const mailResult = await resend.emails.send({
+            const tip = req.body.type;
+            let emailHtml = `<h2>Imaš nov termin!</h2><p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>`;
+
+            if (tip === 'prevoz') {
+                emailHtml += `<p><b>Stranka:</b> ${req.body.clientName}</p><p><b>Prevzem:</b> ${req.body.pickupAddress}</p><p><b>Cilj:</b> ${req.body.destinationAddress}</p>`;
+            } else if (tip === 'servis') {
+                emailHtml += `<p><b>Vozilo:</b> ${req.body.vehicle}</p><p><b>Opis:</b> ${req.body.serviceDescription}</p>`;
+            } else if (tip === 'dostava') {
+                emailHtml += `<p><b>Paket:</b> ${req.body.packageDesc}</p><p><b>Naslov:</b> ${req.body.deliveryAddress}</p><p><b>Prejemnik:</b> ${req.body.recipient}</p>`;
+            } else if (tip === 'sestanek') {
+                emailHtml += `<p><b>Tema:</b> ${req.body.topic}</p><p><b>Lokacija:</b> ${req.body.location}</p>`;
+            } else if (tip === 'it_ticket') {
+                emailHtml += `<p><b>Naslov:</b> ${req.body.title}</p><p><b>Opis:</b> ${req.body.description}</p><p><b>Prioriteta:</b> ${req.body.priority}</p>`;
+            }
+
+            await resend.emails.send({
                 from: 'noreply@workwave.space',
                 to: user.email,
                 subject: 'Nov termin dodeljen!',
-                html: `
-                    <h2>Imaš nov termin!</h2>
-                    <p><b>Stranka:</b> ${req.body.clientName}</p>
-                    <p><b>Čas:</b> ${new Date(req.body.time).toLocaleString('sl-SI')}</p>
-                    <p><b>Prevzem:</b> ${req.body.pickupAddress}</p>
-                    <p><b>Cilj:</b> ${req.body.destinationAddress}</p>
-                `
+                html: emailHtml
             });
-
-            console.log("Mail result:", mailResult);
         }
 
         res.status(201).json({ message: "Termin ustvarjen!" });
