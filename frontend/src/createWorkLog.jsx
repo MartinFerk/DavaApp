@@ -123,7 +123,7 @@ function WorkLog() {
                         <option value="servis">🔧 Servis</option>
                         <option value="dostava">📦 Dostava</option>
                         <option value="sestanek">📅 Sestanek</option>
-                        <option value="it_ticket">💻 IT Ticket</option>
+                        <option value="it_ticket">💻 IT Zahtevek</option>
                     </select>
                 </div>
 
